@@ -1,0 +1,12 @@
+{
+    "bookAdded": "Book added successfully.",
+    "bookUpdated": "Book updated successfully.",
+    "bookDeleted": "Book deleted successfully.",
+    "bookNotFound": "Book not found or does not belong to the user.",
+    "failedToAddBook": "Failed to add book.",
+    "failedToUpdateBook": "Failed to update book.",
+    "failedToDeleteBook": "Failed to delete book.",
+    "failedToRetrieveBooks": "Failed to retrieve books.",
+    "bookNameRequired": "Book name is required.",
+    "authorNameRequired": "Author name is required."
+}

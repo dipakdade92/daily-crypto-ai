@@ -1,47 +1,65 @@
 import { Request, Response } from 'express';
-import Book, { IBook } from '../models/book.model'; 
+import Book, { IBook } from '../models/book.model';
+import { sendResponse } from '../utils/response';
+import { StatusCodes } from '../utils/status';
+import messages from '../config/messages.json'; 
 
 // Add a new book
 export const addBook = async (req: Request, res: Response) => {
     try {
-        const { name, author, publishedYear} = req.body;
+        const { name, author } = req.body;
         const userId = req.user?.userId;
+
+        // Validate required fields
+        if (!name) {
+            return sendResponse(res, StatusCodes.BAD_REQUEST, messages.bookNameRequired);
+        }
+        if (!author) {
+            return sendResponse(res, StatusCodes.BAD_REQUEST, messages.authorNameRequired);
+        }
 
         // Create a new book instance
         const newBook: IBook = new Book({
             name,
             author,
-            publishedYear,
-            userId, 
+            userId,
         });
 
         const savedBook = await newBook.save();
-        return res.status(201).json({ message: 'Book added successfully.', book: savedBook });
+        return sendResponse(res, StatusCodes.CREATED, messages.bookAdded, savedBook);
     } catch (error) {
-        return res.status(500).json({ error: 'Failed to add book.' });
+        return sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.failedToAddBook);
     }
 };
 
 // Update a book
 export const updateBook = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { name, author, publishedYear } = req.body;
+    const { name, author } = req.body;
 
     try {
         const book = await Book.findById(id);
         if (!book || book.userId !== req.user?.userId) {
-            return res.status(404).json({ error: 'Book not found or does not belong to the user.' });
+            return sendResponse(res, StatusCodes.NOT_FOUND, messages.bookNotFound);
+        }
+
+        // Validate required fields
+        if (!name) {
+            return sendResponse(res, StatusCodes.BAD_REQUEST, messages.bookNameRequired);
+        }
+        if (!author) {
+            return sendResponse(res, StatusCodes.BAD_REQUEST, messages.authorNameRequired);
         }
 
         const updatedBook = await Book.findByIdAndUpdate(
             id,
-            { name, author, publishedYear },
-            { new: true } 
+            { name, author },
+            { new: true }
         );
 
-        return res.status(200).json({ message: 'Book updated successfully.', book: updatedBook });
+        return sendResponse(res, StatusCodes.OK, messages.bookUpdated, updatedBook);
     } catch (error) {
-        return res.status(500).json({ error: 'Failed to update book.' });
+        return sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.failedToUpdateBook);
     }
 };
 
@@ -52,13 +70,13 @@ export const deleteBook = async (req: Request, res: Response) => {
     try {
         const book = await Book.findById(id);
         if (!book || book.userId !== req.user?.userId) {
-            return res.status(404).json({ error: 'Book not found or does not belong to the user.' });
+            return sendResponse(res, StatusCodes.NOT_FOUND, messages.bookNotFound);
         }
 
-        const deletedBook = await Book.findByIdAndDelete(id);
-        return res.status(200).json({ message: 'Book deleted successfully.' });
+        await Book.findByIdAndDelete(id);
+        return sendResponse(res, StatusCodes.OK, messages.bookDeleted);
     } catch (error) {
-        return res.status(500).json({ error: 'Failed to delete book.' });
+        return sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.failedToDeleteBook);
     }
 };
 
@@ -68,8 +86,24 @@ export const getAllBooks = async (req: Request, res: Response) => {
         const userId = req.user?.userId;
         const books = await Book.find({ userId });
 
-        return res.status(200).json({ books });
+        return sendResponse(res, StatusCodes.OK, '', books);
     } catch (error) {
-        return res.status(500).json({ error: 'Failed to retrieve books.' });
+        return sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.failedToRetrieveBooks);
+    }
+};
+
+// Get a book by ID for the authenticated user
+export const getBookById = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+        const book = await Book.findById(id);
+        if (!book || book.userId !== req.user?.userId) {
+            return sendResponse(res, StatusCodes.NOT_FOUND, messages.bookNotFound);
+        }
+
+        return sendResponse(res, StatusCodes.OK, '', book);
+    } catch (error) {
+        return sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.failedToRetrieveBooks);
     }
 }; 

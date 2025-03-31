@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { register, login, getProfile } from '../controllers/auth.controller';
 import { authenticate } from '../middleware/auth.middleware';
-import { addBook, deleteBook, getAllBooks, updateBook } from '../controllers/book.controller';
+import { addBook, deleteBook, getAllBooks, updateBook, getBookById } from '../controllers/book.controller';
 
 const router = Router();
 
@@ -12,5 +12,6 @@ router.post('/book', authenticate, addBook);
 router.put('/book/:id', authenticate, updateBook);
 router.delete('/book/:id', authenticate, deleteBook);
 router.get('/books', authenticate, getAllBooks);
-
+router.get('/book/:id', authenticate, getBookById);
+    
 export default router; 
