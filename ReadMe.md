@@ -1,4 +1,4 @@
-# Book Management App - Full Stack Developer Home Assignment
+# Book Management App - Backend
 
 ## put your env file in this below is my env file if need to do changes replace credentials accordingly
 NODE_ENV =development 
