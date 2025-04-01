@@ -1,38 +1,27 @@
 # Book Management App - Full Stack Developer Home Assignment
 
-## Overview
-This assignment is designed to evaluate your skills as a full stack developer. You will be tasked with developing a Book Management Application that allows users to manage their book collection effectively.
+## put your env file in this below is my env file if need to do changes replace credentials accordingly
+NODE_ENV =development 
+JWT_SECRET =afgsdjryyhwtysrdhbaesgsrdjtth
+MONGODB_URI =mongodb://localhost:27017/daily-crypto-task
+PORT =8000
 
-## Requirements
-- **Frontend**: Create a user-friendly interface that allows users to:
-  - Add new books to their collection
-  - Edit existing book details
-  - Delete books from their collection
-  - View a list of all books in their collection
+## Install packages with 
+- **npm install**
 
-- **Backend**: You will be provided with an authentication backend codebase. You are required to integrate this with your application to handle user authentication and authorization.
+## Saparate status file that is status.ts
+- all status are keep here and import in the file >>utils >> status.ts
 
-## Provided Resources
-- **Auth Backend Codebase**: The company has provided a pre-built authentication backend. You will need to familiarize yourself with this codebase and integrate it into your application.
+## Saparate Messages file that is message.json
+- all messages are keep here and import in the file >>src >> config>> message.json
 
-## Technical Specifications
-- **Frontend Framework**: You may use any modern JavaScript framework (e.g., React, Angular, Vue.js).
-- **Backend**: You can choose to use Node.js, Express, or any other backend technology you are comfortable with.
-- **Database**: Use a database of your choice (e.g., MongoDB, PostgreSQL) to store book information.
+## In tsconfig.json added below code
+"resolveJsonModule": true,
+"esModuleInterop": true,
+"allowSyntheticDefaultImports": true
 
-## Submission Guidelines
-- Please submit your code in a public GitHub repository.
-- Include a README file that explains how to set up and run your application.
-- Ensure your code is well-documented and follows best practices.
+## installed joi package
+- "joi": "^17.13.3",
 
-## Evaluation Criteria
-- Code quality and organization
-- User interface design and usability
-- Proper integration of the authentication backend
-- Functionality and completeness of the application
-
-## Deadline
-Please submit your completed assignment by 7 days.
-
-## Good Luck!
-We look forward to seeing your work and how you approach this assignment!
+ ## Run Backend Code
+ - npm run dev
