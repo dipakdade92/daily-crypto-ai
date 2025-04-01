@@ -29,7 +29,6 @@ app.use('/api/auth', authRoutes);
 
 // Error handling
 app.use(errorHandler);
-console.log("process.env", process.env.MONGODB_URI)
 // Database connection
 mongoose
   .connect(process.env.MONGODB_URI!)
